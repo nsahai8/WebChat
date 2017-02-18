@@ -1,0 +1,15 @@
+/home/niharika/workspace/newProject/WebChatApplication/src/ai/niki/model/ChatMessage.java
+/home/niharika/workspace/newProject/WebChatApplication/src/ai/niki/repositories/ChatMessageRepository.java
+/home/niharika/workspace/newProject/WebChatApplication/src/ai/niki/controller/AppController.java
+/home/niharika/workspace/newProject/WebChatApplication/src/ai/niki/service/impl/ChatMessageServiceImpl.java
+/home/niharika/workspace/newProject/WebChatApplication/src/ai/niki/controller/testMainFile.java
+/home/niharika/workspace/newProject/WebChatApplication/src/ai/niki/config/MongoConfig.java
+/home/niharika/workspace/newProject/WebChatApplication/src/ai/niki/config/CorsFilter.java
+/home/niharika/workspace/newProject/WebChatApplication/src/ai/niki/config/MvcConfig.java
+/home/niharika/workspace/newProject/WebChatApplication/src/ai/niki/repositories/UserRepository.java
+/home/niharika/workspace/newProject/WebChatApplication/src/ai/niki/service/AppService.java
+/home/niharika/workspace/newProject/WebChatApplication/src/ai/niki/service/impl/AppServiceImpl.java
+/home/niharika/workspace/newProject/WebChatApplication/src/ai/niki/service/ChatMessageService.java
+/home/niharika/workspace/newProject/WebChatApplication/src/ai/niki/service/impl/AbstractDataServiceImpl.java
+/home/niharika/workspace/newProject/WebChatApplication/src/ai/niki/service/AbstractDataService.java
+/home/niharika/workspace/newProject/WebChatApplication/src/ai/niki/model/User.java

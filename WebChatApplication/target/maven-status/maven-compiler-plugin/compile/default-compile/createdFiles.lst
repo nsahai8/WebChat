@@ -1,0 +1,16 @@
+ai/niki/service/impl/ChatMessageServiceImpl.class
+ai/niki/model/ChatMessage.class
+ai/niki/model/messageStatus.class
+ai/niki/config/MongoConfig.class
+ai/niki/service/impl/AppServiceImpl.class
+ai/niki/service/ChatMessageService.class
+ai/niki/repositories/ChatMessageRepository.class
+ai/niki/config/CorsFilter.class
+ai/niki/config/MvcConfig.class
+ai/niki/service/AbstractDataService.class
+ai/niki/service/AppService.class
+ai/niki/repositories/UserRepository.class
+ai/niki/controller/AppController.class
+ai/niki/service/impl/AbstractDataServiceImpl.class
+ai/niki/model/User.class
+ai/niki/controller/testMainFile.class
