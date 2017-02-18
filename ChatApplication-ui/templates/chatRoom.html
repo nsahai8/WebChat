@@ -1,0 +1,39 @@
+<div class="row" style="width: 100%;">
+    <div class="row" style="height:500px;">
+        <div class="row" style="background-color: white;width: 25%;height:300px;margin:5px;" ng-show="numberOfCoversation>0">
+            <div id="chatHeaders" class="row" style="border: solid 2px #aaa;margin-left:0px;">
+                <div class="col-md-6 " style="border-right:solid 2px #aaa;" ng-click="chooseChat('private')"
+                ng-class="{'background_select':true}">Private Chat</div>
+                <div class="col-md-6 "> Group Chat</div>
+            </div>
+            <div ng-show="!isPrivate">
+                <div ng-repeat="user in allUsers" style="height: 30px;text-align: center;border-bottom: solid 2px #aaa; margin-top:5px;" ng-click="startPrivateChat(user)">
+                    {{user.name}}
+                </div>
+            </div>
+            <div ng-show="isPrivate">
+                <div style = "height:226px;">
+                    <div ng-repeat="conv in currentConversation">
+                        <div  style="background:#ADDDE6; display: inline-block; border-radius: 1px; margin-top:1px; margin-left:1px;">
+                        {{conv.message}}
+                    </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="col-md-9" style="margin-top:5px;">
+                        <input class="form-control input-sm width_100" min="0" placeholder="Chat with {{receiver.name}}" ng-model="message">
+                    </div>
+                    <div class="col-md-2">
+                        <img src="send.jpg" alt="Niki.Ai" style="width:50px;height:50px; background-color:white;" ng-click="sendMessage(message,receiver)">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="margin-left:1000px;" ng-show="numberOfCoversation === 0">
+        <img src="plus.png" alt="Niki.Ai" style="width:50px;height:50px;" ng-click="startChat()">
+    </div>
+    <div style="margin-left:1000px;" ng-show="!(numberOfCoversation === 0)">
+        <img src="minus.png" alt="Niki.Ai" style="width:50px;height:50px;" ng-click="removeChat()">
+    </div>
+</div>
