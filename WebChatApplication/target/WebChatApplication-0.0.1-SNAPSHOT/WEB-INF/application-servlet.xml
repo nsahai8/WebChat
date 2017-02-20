@@ -25,7 +25,7 @@
 
      <constructor-arg name="mongo" ref="mongo" />
 
-     <constructor-arg name="databaseName" value="assortment" />
+     <constructor-arg name="databaseName" value="chatApp" />
 
 </bean>
 

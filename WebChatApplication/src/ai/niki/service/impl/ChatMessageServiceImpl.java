@@ -1,10 +1,14 @@
 package ai.niki.service.impl;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import ai.niki.model.ChatMessage;
@@ -44,7 +48,15 @@ public class ChatMessageServiceImpl extends AbstractDataServiceImpl<ChatMessage,
 
 	@Override
 	public List<ChatMessage> getMessagesBetweenSenderAndReceiver(String sender, String receiver) {
-		return chatMessageRepository.findBySenderAndReceiver(sender, receiver);
+		PageRequest page = new PageRequest(0, 10, new Sort(Sort.Direction.DESC, "created"));
+		List<ChatMessage> list = chatMessageRepository.findBySenderAndReceiver(sender, receiver,page);
+		list.addAll(chatMessageRepository.findBySenderAndReceiver(receiver,sender,page));
+		Collections.sort(list, new Comparator<ChatMessage>() {
+		    public int compare(ChatMessage m1, ChatMessage m2) {
+		        return m1.getCreated().compareTo(m2.getCreated());
+		    }
+		});
+		return list;
 	}
 
 }

@@ -2,15 +2,13 @@
     angular
         .module("WebChatApp")
         .config(["$httpProvider", "$routeProvider", function($httpProvider, $routeProvider) {
-            /*$httpProvider.defaults.withCredentials = true;
-            $httpProvider.interceptors.push('http_request');
-            // $httpProvider.interceptors.push('http_request_error');
-            $httpProvider.interceptors.push('http_response');
-            $httpProvider.interceptors.push('http_response_error');*/
-
             $routeProvider
                 .when('/', {
-                    templateUrl: 'templates/example.html',
+                    templateUrl: 'templates/loginPage.html',
+                    controller: 'loginCtrl'
+                })
+                .when('/login', {
+                    templateUrl: 'templates/loginPage.html',
                     controller: 'loginCtrl'
                 })
                 .when('/chatRoom', {

@@ -1,6 +1,7 @@
 ai/niki/service/impl/ChatMessageServiceImpl.class
 ai/niki/model/ChatMessage.class
 ai/niki/model/messageStatus.class
+ai/niki/service/impl/ChatMessageServiceImpl$1.class
 ai/niki/config/MongoConfig.class
 ai/niki/service/impl/AppServiceImpl.class
 ai/niki/service/ChatMessageService.class

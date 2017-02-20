@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 
 import com.mongodb.Mongo;
 import com.mongodb.MongoClient;
-
+//
 @Configuration
 @EnableMongoRepositories(basePackages = "ai.niki.repositories")
 public class MongoConfig {

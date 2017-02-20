@@ -1,3 +1,3 @@
 (function() {
-    angular.module('WebChatApp', ['ngAnimate', 'ui.bootstrap', 'ngRoute', 'angucomplete-alt', 'checklist-model', 'ngSanitize', 'ui.select', 'infinite-scroll']);
+    angular.module('WebChatApp', ['ngAnimate', 'ui.bootstrap', 'ngRoute',  'ui.select', 'infinite-scroll','pubnub.angular.service']);
 })();
