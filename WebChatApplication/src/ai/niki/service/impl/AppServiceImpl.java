@@ -34,16 +34,23 @@ public class AppServiceImpl extends AbstractDataServiceImpl<User, ObjectId> impl
 
 	}
 
+	//get all users in his contacts
 	public List<User> getAllUsers() {
 		List<User> allUsers = userRepository.findAll();
 		return allUsers;
 	}
 
+	//validate the user is subscribed
 	public Boolean isValidUser(String emailId) {
 		if (userRepository.findByEmail(emailId) != null) {
 			return true;
 		}
 		return false;
+	}
+
+	//get User object by Email of user
+	public User getUserByEmailId(String email) {
+		return userRepository.findByEmail(email);
 	}
 
 	

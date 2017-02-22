@@ -1,31 +1,33 @@
 <div class="row" style="width: 100%; background-image: url("nikiAiLogo.jpg");">
     <div class="row" style="height:500px;">
         <div class="row" style="background-color: white;width: 25%;height:300px;margin:5px;" ng-show="numberOfCoversation>0">
-            <div id="chatHeaders" class="row" style="margin-left:0px;width:100%">
-                <div class="col-md-6 " style="border-right:solid 2px #ccc;" ng-click="chooseChat('private')" ng-class="{'background_select':!isGroupChat}">Private Chat</div>
-                <div class="col-md-6 " ng-click="chooseChat('group')" ng-class="{'background_select':isGroupChat}"> Group Chat</div>
+            <div id="chatHeaders" class="row" style="margin-left:0px;width:100% ;border-bottom: solid 2px #ccc;">
+                <div class="col-md-6 " style="border-right:solid 2px #ccc;height: 52px;text-align: center;text-indent: center;vertical-align: middle;line-height: 52px;" ng-click="chooseChat('private')" ng-class="{'background_select':!isGroupChat}">Private Chat</div>
+                <div class="col-md-6 " ng-click="chooseChat('group')" ng-class="{'background_select':isGroupChat}" style="height: 52px;text-align: center;text-indent: center;vertical-align: middle;line-height: 52px;"> Group Chat</div>
             </div>
             <div ng-show="!isPrivateStarted">
-                <div ng-repeat="user in allUsers" style="height: 30px;text-align: center;border-bottom: solid 2px #aaa; margin-top:5px;" ng-click="startPrivateChat(user)" ng-show="!isGroupChat">
+                <div ng-repeat="user in allUsers" style="height: 30px;border-bottom: solid 2px #aaa; margin-top:5px;" ng-click="startPrivateChat(user)" ng-show="!isGroupChat">
+                    <img src="contacts.png" style="width:9%;">
                     {{user.name}}
                 </div>
-                <div ng-repeat="groups in groupList" style="height: 30px;text-align: center;border-bottom: solid 2px #aaa; margin-top:5px;" ng-click="startGroupChat(groups)" ng-show="isGroupChat">
+                <div ng-repeat="groups in groupList" style="height: 30px;border-bottom: solid 2px #aaa; margin-top:5px;" ng-click="startGroupChat(groups)" ng-show="isGroupChat">
+                    <img src="group.png" style="width:9%;">
                     {{groups}}
                 </div>
             </div>
             <div ng-show="isPrivateStarted">
-                <div style="height:226px;overflow-x:hidden;">
-                    <div ng-repeat="conv in currentConversation">
-                        <div class="row" style="background-color:#d8d8d8;margin-top:1px;">
-                            <div class="col-md-3">{{splitString(conv.sender,'@',0)}}:</div>
-                            <div class="col-md-8" style="display: inline-block; border-radius: 50px; margin-top:1px; ">
+                <div id="chatBox" style="height:200px;overflow-x:hidden;">
+                    <div  ng-repeat="conv in currentConversation">
+                        <div class="row" style="margin-top:1px;">
+                            <!-- <div class="col-md-3">{{splitString(conv.sender,'@',0)}}:</div> -->
+                            <div class="col-md-6" style="display: inline-block; word-wrap:break-word; border-radius: 50px; margin-top:1px; background-color:#d8d8d8; text-align:center;" ng-class="{'pull-right': conv.sender === userName}" scroll-glue>
                                 {{conv.message}}
                             </div>
                         </div>
                     </div>
                 </div>
-                <div>
-                    <form ng-show="!isGroupChat">
+                <div class="row">
+                    <form ng-show="!isGroupChat" style="margin-left:2px;">
                         <div class="col-md-9" style="margin-top:5px;">
                             <input class="form-control input-sm width_100" min="0" placeholder="Chat with {{receiver.name}}" ng-model="message">
                         </div>

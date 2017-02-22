@@ -1,8 +1,8 @@
 (function() {
     angular
         .module("WebChatApp")
-        .controller("chatRoomCtrl", ['$scope', 'network_service', '$rootScope', '$http', '$location', '$routeParams', 'Pubnub',
-            function($scope, network_service, $RS, $http, $location, $routeParams, Pubnub) {
+        .controller("chatRoomCtrl", ['$scope', 'network_service', '$rootScope', '$http', '$location', '$routeParams', 'Pubnub','$timeout',
+            function($scope, network_service, $RS, $http, $location, $routeParams, Pubnub,$timeout) {
 
                 $scope.channel = 'niki.ai';
                 $scope.userName = $RS.user;
@@ -46,7 +46,6 @@
                     });
 
                     $scope.isPrivateStarted = true;
-                    // $scope.chats.push(user);
                     $scope.receiver = user;
                     //retrieve prev messages
                     var data = {
@@ -63,7 +62,17 @@
                             $scope.currentConversation = response.data;
 
                         }
-                    })
+                    });
+                    $scope.animateScroll();
+                }
+
+                $scope.animateScroll = function() {
+                    
+                    $timeout(function() {
+                        $('#chatBox').animate({
+                            scrollTop: 300
+                        }, 'slow');
+                    }, 0);
                 }
 
                 $scope.removeChat = function() {
@@ -105,17 +114,17 @@
                         channels: [$scope.channel]
                     });
 
-                    if($scope.channel != 'niki.ai'){
-                        $scope.channel ='niki.ai';
+                    if ($scope.channel != 'niki.ai') {
+                        $scope.channel = 'niki.ai';
                     }
 
                     Pubnub.subscribe({
                         channels: [$scope.channel]
                     });
 
-                    
 
-                    $scope.isPrivateStarted =true;
+
+                    $scope.isPrivateStarted = true;
                     network_service.POST({
                         url: 'getAllGroupByName',
                         data: {
@@ -128,10 +137,11 @@
                             if (response.data.messageUserList != null) {
                                 $scope.currentConversation = response.data.messageUserList;
                             }
-                        }else{
+                        } else {
                             $scope.currentConversation = [];
                         }
-                    })
+                    });
+                    $scope.animateScroll();
                 }
 
                 $scope.sendMessage = function(sendMessage, sendTo) {
@@ -168,12 +178,13 @@
                             $scope.message = null;
                             //pushing message in senders window
                             $scope.currentConversation.push(params);
+                            $scope.animateScroll();
                         }
                     });
 
                 };
 
-                $scope.sendMessageInGroup = function(sendMessage){
+                $scope.sendMessageInGroup = function(sendMessage) {
                     if (!sendMessage || sendMessage === '') {
                         return;
                     }
@@ -198,15 +209,16 @@
                         }
                     );
                     network_service.GET({
-                        url:'saveGroupMessage',
-                        params:{
-                            'groupName':$scope.groupName,
-                            'message':sendMessage,
-                            'sender':$scope.userName
+                        url: 'saveGroupMessage',
+                        params: {
+                            'groupName': $scope.groupName,
+                            'message': sendMessage,
+                            'sender': $scope.userName
                         }
-                    }).then(function(response){
+                    }).then(function(response) {
                         $scope.message = null;
                         $scope.currentConversation.push(params);
+                        $scope.animateScroll();
                     })
                 }
 
@@ -243,42 +255,46 @@
                     });
 
 
-                    Pubnub.init({
-                        subscribeKey: "sub-c-6e73ec4a-f5f4-11e6-ac91-02ee2ddab7fe",
-                        publishKey: "pub-c-1fc67093-3d16-4e80-964a-1378a6b76c38",
-                        ssl: true
-                    });
 
-
-                    // Subscribe to a channel
-                    Pubnub.addListener({
-                        status: function(statusEvent) {
-                            if (statusEvent.category === "PNUnknownCategory") {
-                                var newState = {
-                                    new: 'error'
-                                };
-                                Pubnub.setState({
-                                        state: newState
-                                    },
-                                    function(status) {
-                                        console.log(statusEvent.errorData.message)
-                                    }
-                                );
-                            }
-                        },
-                        message: function(message) {
-
-                            if (message.message.sender != $scope.userName) {
-                                $scope.currentConversation.push(message.message);
-                            }
-
-                        }
-                    })
 
 
 
 
                 };
+
+                Pubnub.init({
+                    subscribeKey: "sub-c-6e73ec4a-f5f4-11e6-ac91-02ee2ddab7fe",
+                    publishKey: "pub-c-1fc67093-3d16-4e80-964a-1378a6b76c38",
+                    ssl: true
+                });
+
+
+                // Subscribe to a channel
+                Pubnub.addListener({
+                    status: function(statusEvent) {
+                        if (statusEvent.category === "PNUnknownCategory") {
+                            var newState = {
+                                new: 'error'
+                            };
+                            Pubnub.setState({
+                                    state: newState
+                                },
+                                function(status) {
+                                    console.log(statusEvent.errorData.message)
+                                }
+                            );
+                        }
+                    },
+                    message: function(message) {
+
+                        if (message.message.sender != $scope.userName) {
+                            $scope.currentConversation.push(message.message);
+                            $scope.$apply();
+                            $scope.animateScroll();
+                        }
+
+                    }
+                });
 
                 init();
 

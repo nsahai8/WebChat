@@ -9,5 +9,6 @@ import ai.niki.model.User;
 public interface AppService extends AbstractDataService<User, ObjectId>{
 	 List<User> getAllUsers();
 	 Boolean isValidUser(String emailId);
+	 User getUserByEmailId(String email);
 	 
 }

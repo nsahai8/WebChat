@@ -2,9 +2,7 @@ package ai.niki.service.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +24,7 @@ public class GroupChatServiceImpl extends AbstractDataServiceImpl<GroupChat, Obj
 		this.groupChatRepository = repository;
 	}
 
-	@Override
+	//get All group Obj
 	public List<String> getAllGroups(String member) {
 		List<GroupChat> allgroupChats = groupChatRepository.findAll();
 		List<String> allGroupNames = new ArrayList<>();
@@ -37,7 +35,7 @@ public class GroupChatServiceImpl extends AbstractDataServiceImpl<GroupChat, Obj
 		}
 		return allGroupNames;
 	}
-
+	//validate user is member of group
 	private boolean isUserMemberOfGroup(String member, GroupChat groupChat) {
 		List<User> allUsers = groupChat.getGroupMembers();
 		for (User user : allUsers) {
@@ -48,17 +46,17 @@ public class GroupChatServiceImpl extends AbstractDataServiceImpl<GroupChat, Obj
 		return false;
 	}
 
-	@Override
+	//get group object by group name
 	public GroupChat getGroupByName(String groupName) {
 		return groupChatRepository.findByGroupName(groupName);
 	}
 
-	@Override
+	//saves the group obj
 	public void saveGroup(GroupChat groupChat) {
 		groupChatRepository.save(groupChat);
 	}
 
-	@Override
+	//saves messages in the group send by sender
 	public void saveMessages(String message, String groupName, String sender) {
 		GroupChat groupChat = groupChatRepository.findByGroupName(groupName);
 		List<GroupChat.SenderMessage> messageSenderList = groupChat.getMessageUserList();
