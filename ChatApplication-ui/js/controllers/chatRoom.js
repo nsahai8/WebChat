@@ -10,7 +10,8 @@
                 $scope.allUsers = [];
                 $scope.chats = [];
 
-                $scope.isPrivate = false;
+                $scope.isPrivateStarted = false;
+                $scope.isGroupChat = false;
                 $scope.currentConversation = [];
 
 
@@ -24,14 +25,15 @@
                 };
 
                 var reset = function() {
-                    $scope.isPrivate = false;
+                    $scope.isPrivateStarted = false;
                     $scope.chats = [];
                 }
 
                 $scope.startPrivateChat = function(user) {
+                    Pubnub.unsubscribe({
+                        channels: [$scope.channel]
+                    });
                     $scope.chats = [];
-
-                    
 
                     if ($scope.userName > user.emailId) {
                         $scope.channel = user.emailId + $scope.userName;
@@ -43,7 +45,7 @@
                         channels: [$scope.channel]
                     });
 
-                    $scope.isPrivate = true;
+                    $scope.isPrivateStarted = true;
                     // $scope.chats.push(user);
                     $scope.receiver = user;
                     //retrieve prev messages
@@ -73,11 +75,63 @@
                 }
 
                 $scope.chooseChat = function(id) {
+                    $scope.isPrivateStarted = false;
+                    $scope.message = null;
                     if (id === 'private') {
-                        $scope.isPrivate = false;
-                        $scope.message = null;
+                        $scope.isGroupChat = false;
                         $scope.currentConversation = [];
+                        return;
                     }
+                    $scope.isGroupChat = true;
+                    $scope.getAllGroups();
+                }
+
+                $scope.getAllGroups = function() {
+                    network_service.GET({
+                        url: 'getAllGroupNames',
+                        params: {
+                            member: $scope.userName
+                        }
+
+                    }).then(function(response) {
+                        if (response.status === 200) {
+                            $scope.groupList = response.data;
+                        }
+                    })
+                }
+
+                $scope.startGroupChat = function(groupName) {
+                    Pubnub.unsubscribe({
+                        channels: [$scope.channel]
+                    });
+
+                    if($scope.channel != 'niki.ai'){
+                        $scope.channel ='niki.ai';
+                    }
+
+                    Pubnub.subscribe({
+                        channels: [$scope.channel]
+                    });
+
+                    
+
+                    $scope.isPrivateStarted =true;
+                    network_service.POST({
+                        url: 'getAllGroupByName',
+                        data: {
+                            name: groupName
+                        },
+                        formPOST: true
+                    }).then(function(response) {
+                        if (response.status === 200) {
+                            $scope.groupName = groupName;
+                            if (response.data.messageUserList != null) {
+                                $scope.currentConversation = response.data.messageUserList;
+                            }
+                        }else{
+                            $scope.currentConversation = [];
+                        }
+                    })
                 }
 
                 $scope.sendMessage = function(sendMessage, sendTo) {
@@ -118,6 +172,43 @@
                     });
 
                 };
+
+                $scope.sendMessageInGroup = function(sendMessage){
+                    if (!sendMessage || sendMessage === '') {
+                        return;
+                    }
+                    var params = {
+                        message: sendMessage,
+                        sender: $scope.userName,
+                        receiver: 'group'
+                    };
+
+
+                    Pubnub.publish({
+                            message: params,
+                            channel: $scope.channel
+                        },
+                        function(status, response) {
+                            if (status.error) {
+                                // handle error
+                                console.log("Error occured: " + status)
+                            } else {
+                                console.log("message Published w/ timetoken", response.timetoken)
+                            }
+                        }
+                    );
+                    network_service.GET({
+                        url:'saveGroupMessage',
+                        params:{
+                            'groupName':$scope.groupName,
+                            'message':sendMessage,
+                            'sender':$scope.userName
+                        }
+                    }).then(function(response){
+                        $scope.message = null;
+                        $scope.currentConversation.push(params);
+                    })
+                }
 
                 $scope.splitString = function(input, splitChar, splitIndex) {
                     //if splitChar is not in input
@@ -176,6 +267,7 @@
                             }
                         },
                         message: function(message) {
+
                             if (message.message.sender != $scope.userName) {
                                 $scope.currentConversation.push(message.message);
                             }

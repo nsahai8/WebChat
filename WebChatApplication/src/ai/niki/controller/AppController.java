@@ -1,5 +1,7 @@
 package ai.niki.controller;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +13,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import ai.niki.model.ChatMessage;
+import ai.niki.model.GroupChat;
 import ai.niki.model.User;
 import ai.niki.service.AppService;
 import ai.niki.service.ChatMessageService;
+import ai.niki.service.GroupChatService;
 
 @Controller
 public class AppController {
@@ -23,6 +27,9 @@ public class AppController {
 	
 	@Autowired
 	private ChatMessageService chatMessageService;
+	
+	@Autowired
+	private GroupChatService groupChatService;
 	
 	@RequestMapping("/")
 	public void welcomePage() {
@@ -93,6 +100,39 @@ public class AppController {
 	public List<ChatMessage> getAllMessageByUser(@RequestParam(value="sender") String sender) {
 		List<ChatMessage> messages = chatMessageService.getMessagesByUser(sender);
 		return messages;
+	}
+	
+	@RequestMapping(value="/startGroupChat",method=RequestMethod.GET)
+	public String startGroupChat() {
+		GroupChat groupChat = new GroupChat();
+		groupChat.setGroupCreated(new Date());
+		groupChat.setGroupName("Group1");
+		List<User> groupMembers = appService.getAllUsers();
+		groupChat.setGroupMembers(groupMembers);
+		groupChat.setStatus(ai.niki.model.GroupChat.MessageStatus.NotSeenByAll);
+		groupChatService.save(groupChat);
+		return "saved";
+	}
+	
+	@RequestMapping(value="/getAllGroupNames",method=RequestMethod.GET)
+	@ResponseBody
+	public List<String> getAllGroupNames(@RequestParam(value="member")String member) {
+		return groupChatService.getAllGroups(member);
+	}
+	
+	@RequestMapping(value="/getAllGroupByName",method=RequestMethod.POST)
+	@ResponseBody
+	public GroupChat getAllGroupByName(@RequestParam(value="name") String groupName) {
+		
+		return groupChatService.getGroupByName(groupName);
+	}
+	
+	@RequestMapping(value="/saveGroupMessage",method=RequestMethod.GET)
+	@ResponseBody
+	public void saveGroupMessage(@RequestParam(value="groupName") String groupName,
+			@RequestParam(value="message")String message,@RequestParam(value="sender")String sender) {
+		
+		groupChatService.saveMessages(message, groupName, sender);
 	}
 	
 	
