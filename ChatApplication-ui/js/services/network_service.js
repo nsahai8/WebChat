@@ -2,11 +2,8 @@
     angular
         .module("WebChatApp")
         .factory("network_service", ['$rootScope', '$http', 'EP', "$timeout", "$q", function($rootScope, $http, EP, $timeout, $q) {
-            var server = EP.getAPIEndpoint(); // Use this for staging / production only
-            /*
-             * @author Aviral Jain
-             * @params queryObj - query params in form of simple object
-             */
+            var server = EP.getAPIEndpoint(); 
+            
             var toQueryParams = function(queryObj, isFormPOST) {
                 var query = "",
                     a = "";
@@ -89,16 +86,6 @@
                     if (!options.silent && !(options && options.ignore_errorCode && options.ignore_errorCode.indexOf(response.status) > -1)) {
                         console.log(response.status);
                         var error = getErrorMessage(response);
-                        // if (options.url !== 'user' || response.errorCode === 500) {
-                        //     $rootScope.showPopupMessage('error', 'Error Occured', error.errorMessage, ' Status Code: ' + error.statusCode);
-                        // }
-                        // if (error.statusCode === 401) {
-                        //     $rootScope.user = {};
-                        //     $rootScope.isAuthenticated = false;
-                        //     localStorage.setItem('location', '');
-                        //     window.location.href = "#login";
-                        // }
-                        console.log(error);
                     }
                     return response;
                 });
@@ -130,14 +117,6 @@
                 }, function(response) {
                     if (!options.silent && !(options && options.ignore_errorCode && options.ignore_errorCode.indexOf(response.status) > -1)) {
                         var error = getErrorMessage(response);
-                        // $rootScope.showPopupMessage('error', 'Error Occured', error.errorMessage, ' Status Code: ' + error.statusCode);
-                        // if (error.statusCode === 401) {
-                        //     $rootScope.user = {};
-                        //     $rootScope.isAuthenticated = false;
-                        //     localStorage.setItem('location', '');
-                        //     window.location.href = "#login";
-                        // }
-                        console.log(error);
                     }
                     return response;
                 });

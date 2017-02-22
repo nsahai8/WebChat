@@ -1,11 +1,11 @@
 <div class="row" style="width: 100%; background-image: url("nikiAiLogo.jpg");">
     <div class="row" style="height:500px;">
-        <div class="row" style="background-color: white;width: 25%;height:300px;margin:5px;" ng-show="numberOfCoversation>0">
+        <div class="row" style="background-color: white;width: 25%;min-height:300px;margin:5px;" ng-show="numberOfCoversation>0">
             <div id="chatHeaders" class="row" style="margin-left:0px;width:100% ;border-bottom: solid 2px #ccc;">
                 <div class="col-md-6 " style="border-right:solid 2px #ccc;height: 52px;text-align: center;text-indent: center;vertical-align: middle;line-height: 52px;" ng-click="chooseChat('private')" ng-class="{'background_select':!isGroupChat}">Private Chat</div>
                 <div class="col-md-6 " ng-click="chooseChat('group')" ng-class="{'background_select':isGroupChat}" style="height: 52px;text-align: center;text-indent: center;vertical-align: middle;line-height: 52px;"> Group Chat</div>
             </div>
-            <div ng-show="!isPrivateStarted">
+            <div ng-show="!isPrivateStarted" style="height:245px;overflow-x:hidden;">
                 <div ng-repeat="user in allUsers" style="height: 30px;border-bottom: solid 2px #aaa; margin-top:5px;" ng-click="startPrivateChat(user)" ng-show="!isGroupChat">
                     <img src="contacts.png" style="width:9%;">
                     {{user.name}}

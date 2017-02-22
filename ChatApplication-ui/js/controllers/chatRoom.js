@@ -1,8 +1,8 @@
 (function() {
     angular
         .module("WebChatApp")
-        .controller("chatRoomCtrl", ['$scope', 'network_service', '$rootScope', '$http', '$location', '$routeParams', 'Pubnub','$timeout',
-            function($scope, network_service, $RS, $http, $location, $routeParams, Pubnub,$timeout) {
+        .controller("chatRoomCtrl", ['$scope', 'network_service', '$rootScope', '$http', '$location', '$routeParams', 'Pubnub', '$timeout',
+            function($scope, network_service, $RS, $http, $location, $routeParams, Pubnub, $timeout) {
 
                 $scope.channel = 'niki.ai';
                 $scope.userName = $RS.user;
@@ -67,7 +67,7 @@
                 }
 
                 $scope.animateScroll = function() {
-                    
+
                     $timeout(function() {
                         $('#chatBox').animate({
                             scrollTop: 300
@@ -110,6 +110,7 @@
                 }
 
                 $scope.startGroupChat = function(groupName) {
+                    $scope.currentConversation = [];
                     Pubnub.unsubscribe({
                         channels: [$scope.channel]
                     });
@@ -137,8 +138,6 @@
                             if (response.data.messageUserList != null) {
                                 $scope.currentConversation = response.data.messageUserList;
                             }
-                        } else {
-                            $scope.currentConversation = [];
                         }
                     });
                     $scope.animateScroll();
